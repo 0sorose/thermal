@@ -1,7 +1,10 @@
 #include "Arduino.h"
 #include "EEPROM.h"
 #include "SPI.h"
-
+#include "Wire.h"
+#include "oled.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_SSD1306.h"
 
 	// pin def
 #define encodeA 2
@@ -103,8 +106,8 @@ void setup(){			//	arduino setup function
 }
 
 
-uint16_t iron_temp_cel()		//	reads resistance from thermistor, returns temp in celcius
-{
+uint16_t iron_temp_cel(){		//	reads resistance from thermistor, returns temp in celcius
+
 	float reading = (float) analogRead(temp_irn);
 	float work = ((reading * 0.6988) - 267.73);						/* the two formula coefficients based on resistor selection go in here */
 	Serial.print("Iron temp reading: ");					/* printing results */
@@ -115,14 +118,14 @@ uint16_t iron_temp_cel()		//	reads resistance from thermistor, returns temp in c
 }
 
 
-uint16_t cel_to_far(uint16_t cel)		// converts temp in Celcius to Farenheit
-{
+uint16_t cel_to_far(uint16_t cel){	// converts temp in Celcius to Farenheit
+
 	return (uint16_t) ((cel*9)/5 + 32);
 }
 
 
-uint8_t duty_log()		// returns percentage duty over a number of readings given by 'duty_log_depth'
-{
+uint8_t duty_log(){		// returns percentage duty over a number of readings given by 'duty_log_depth'
+
 	if(millis() == prev_duty_time)	//only calculates once per ms
 	{
 		return duty_cyc;
@@ -175,8 +178,7 @@ uint8_t duty_log()		// returns percentage duty over a number of readings given b
 
 
 int menu_mem(uint8_t menu){
-	switch (menu)
-	{
+	switch (menu){
 		case 20:
 		return 0;
 		break;
